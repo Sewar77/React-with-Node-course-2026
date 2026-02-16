@@ -11,6 +11,8 @@ import cookieParser from "cookie-parser";
 import { notFound } from "./src/middleware/notFound.Middleware.js"
 import { globalErrorHandler } from "./src/middleware/errorHandler.Middleware.js"
 import { globalRateLimit } from "./src/middleware/rateLimit.Middleware.js";
+import cartRouter from "./src/routes/cart.Routes.js"
+
 dotenv.config();
 connectDB();
 
@@ -22,7 +24,7 @@ app.use(globalRateLimit)
 app.use(cookieParser());
 app.use(helmet())
 app.use(cors({
-    origin: "http://localhost:5174",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
@@ -31,7 +33,7 @@ app.use("/api", userRoutes);
 app.use("/api", productRoutes); //test done
 app.use("/api", categoryRouter); //test done
 app.use("/api", authRoutes)
-
+app.use("/api", cartRouter)
 //error handlng middleware
 app.use(notFound)
 app.use(globalErrorHandler) //MUST be the last one
