@@ -4,6 +4,8 @@ import api from "../../api.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext.jsx";
+import { Box, Button, TextField, Typography } from "@mui/material";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,34 +31,49 @@ function Login() {
     }
   };
   return (
-    <>
-      <h1>Login</h1>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems={"center"}
+      justifyContent={"center"}
+      gap={4}
+    >
+      <Typography variant="h2" align="center" mb={3}>
+        Login
+      </Typography>
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
+        <TextField
+          sx={{ mt: 2, mt: 2 }}
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+          required
+        />
+
+        <TextField
+          sx={{ mt: 2, mb: 2 }}
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+          required
+        />
+
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          color="primary"
+          sx={{ pt: 2, pb: 2 }}
+        >
+          Login
+        </Button>
       </form>
-    </>
+    </Box>
   );
 }
 
