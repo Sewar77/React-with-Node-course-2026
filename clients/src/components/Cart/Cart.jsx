@@ -13,9 +13,10 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Cart() {
-  const { cart, increaseItem } = useContext(CartContext);
+  const { cart, increaseItem, clearCart } = useContext(CartContext);
 
   const total =
     cart?.items?.reduce(
@@ -79,6 +80,13 @@ function Cart() {
             </Card>
           </Grid>
         ))}
+      </Grid>
+      <Grid item xs={4}>
+        <Box display="flex" alignItems="center">
+          <IconButton color="primary" onClick={clearCart}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
       </Grid>
 
       {/* Total Section */}

@@ -24,6 +24,17 @@ export const CartProvider = ({ children }) => {
       console.error(err);
     }
   };
+  const clearCart = async () => {
+    try {
+      await api.delete("/cart");
+      setCart({
+        items: [],
+      });
+      toast.success("deleted successfluus");
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const increaseItem = async (productsId) => {
     try {
       const res = await api.put("/cart/increase", { productsId });
@@ -45,6 +56,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         fetchCart,
         increaseItem,
+        clearCart,
       }}
     >
       {children}

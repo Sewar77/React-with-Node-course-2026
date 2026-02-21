@@ -116,7 +116,23 @@ export const increaseItem = async (req, res) => {
 
 
 
+//clear cart
+export const clearCart = async (req, res) => {
+    try {
+        const userId = req.user.id
+        const cart = await Cart.findOne({ userId })
+        if (!cart) {
+            return res.status(404).json({ cart: null, message: "cart not found" })
+        }
 
+        cart.items = []
+
+        return res.status(200).json({ message: "deleted successfully" })
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
 
 
 
