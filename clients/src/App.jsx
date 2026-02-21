@@ -13,6 +13,7 @@ import About from "./components/Shared/About.jsx";
 import Profile from "./components/Profile/Profile.jsx";
 import ProtectRoutes from "./components/Routes/ProtectRoutes.jsx";
 import AdminRoutes from "./components/Routes/AdminRoutes.jsx";
+import Cart from "./components/Cart/Cart.jsx";
 function App() {
   return (
     <>
@@ -30,6 +31,7 @@ function App() {
             {/* Users Routes */}
             <Route path="/user/dashboard" element={<UserDashboard />} />
             <Route path="/user/profile" element={<Profile />} />
+            <Route path="/user/cart" element={<Cart />} />
             {/* Admin Routes */}
             <Route element={<AdminRoutes />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />

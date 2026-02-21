@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, Children } from "react";
+import { createContext, useState, useEffect } from "react";
 import api from "../../api.js";
 import { useAuth } from "./AuthContext.jsx";
 export const CartContext = createContext();
@@ -6,20 +6,28 @@ import toast from "react-hot-toast";
 export const CartProvider = ({ children }) => {
   const { user } = useAuth();
   const userId = user?._id;
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(null);
+  console.log(userId);
 
   const fetchCart = async () => {
-    const res = await api.get("/cart", { userId });
+    const res = await api.get("/cart");
     console.log(res.data.cart);
     setCart(res.data.cart);
   };
-
   const addToCart = async (productsId) => {
     try {
       const res = await api.post("/cart", { productsId, userId });
-      console.log(res.data.cart);
+      console.log(res);
       toast.success("added to cart successfully");
-
+      setCart(res.data.cart);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const increaseItem = async (productsId) => {
+    try {
+      const res = await api.put("/cart/increase", { productsId });
+      console.log(productsId);
       setCart(res.data.cart);
     } catch (err) {
       console.error(err);
@@ -27,7 +35,7 @@ export const CartProvider = ({ children }) => {
   };
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [userId]);
 
   return (
     <CartContext.Provider
@@ -35,6 +43,8 @@ export const CartProvider = ({ children }) => {
         cart,
         setCart,
         addToCart,
+        fetchCart,
+        increaseItem,
       }}
     >
       {children}

@@ -1,59 +1,120 @@
 import React, { useContext, useEffect, useState } from "react";
 import api from "../../api";
 import toast from "react-hot-toast";
-import "./UserDashboard.css";
-import { Button } from "@mui/material";
-import { CartContext } from "../Context/CartContext.jsx";
+import {
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Box,
+  CardActions,
+} from "@mui/material";
 
-//display products as cards
+import { CartContext } from "../Context/CartContext.jsx";
+import { useNavigate } from "react-router-dom";
+
 function UserDashboard() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+
+  const { addToCart } = useContext(CartContext);
+
   const fetchProducts = async () => {
     try {
       const res = await api.get("/products");
+
       if (res.data.products.length === 0) {
         toast.success("No products found");
       }
+
       setProducts(res.data.products);
     } catch (err) {
       console.error(err);
+      toast.error("Failed to load products");
     }
   };
-  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     fetchProducts();
   }, []);
-  //increase amount and decrease , remove from cart, view cart, checkout, total proce, display cart items
+
   return (
-    <>
-      <div>This is user dashboard page</div>
-      <div className="products-container">
-        {products.map((product) => {
-          return (
-            <div key={product._id} className="product-card">
-              <img
-                src={product.thumbnail}
+    <Container sx={{ mt: 5 }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={4}
+      >
+        <Typography variant="h4" fontWeight="bold">
+          Products
+        </Typography>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate("/user/cart")}
+        >
+          Go To Cart
+        </Button>
+      </Box>
+
+      <Grid container spacing={3}>
+        {products.map((product) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
+            <Card
+              sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                transition: "0.3s",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: 6,
+                },
+              }}
+            >
+              <CardMedia
+                component="img"
+                height="180"
+                image={product.thumbnail}
                 alt={product.name}
-                width="100"
-                height="100"
               />
-              <h3>{product.name}</h3>
-              <p>Price: ${product.price}</p>
-              <p>Stock: {product.stock}</p>
-              <p>{product.description || "No description available"}</p>
-              <Button
-                color="success"
-                variant="contained"
-                onClick={() => addToCart(product._id)}
-              >
-                Add To Cart
-              </Button>
-            </div>
-          );
-        })}
-      </div>
-    </>
+
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" fontWeight="bold">
+                  {product.name}
+                </Typography>
+
+                <Typography variant="body2" color="text.secondary" mb={1}>
+                  {product.description || "No description available"}
+                </Typography>
+
+                <Typography variant="h6" color="success.main" fontWeight="bold">
+                  ${product.price}
+                </Typography>
+
+                <Typography variant="body2">Stock: {product.stock}</Typography>
+              </CardContent>
+
+              <CardActions>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="success"
+                  onClick={() => addToCart(product._id)}
+                >
+                  Add To Cart
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   );
 }
 

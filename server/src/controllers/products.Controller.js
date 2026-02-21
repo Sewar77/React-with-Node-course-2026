@@ -17,7 +17,7 @@ export const createProduct = async (req, res) => {
       thumbnail,
       category,
       stock,
-    });
+    })
     //201 created
     return res
       .status(201)
@@ -29,7 +29,7 @@ export const createProduct = async (req, res) => {
 //get all products
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("category", "name");
     //in case there is o products
     if (products.length === 0) {
       return res
@@ -48,7 +48,7 @@ export const getAllProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate("category", "name")
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }

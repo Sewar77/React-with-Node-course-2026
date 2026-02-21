@@ -8,7 +8,7 @@ function DisplayProducts() {
   const fetchProducts = async () => {
     try {
       const res = await api.get("/products");
-      // console.log(res);
+      console.log(res.data);
       //check if there is no products
       if (res.data.products.length === 0) {
         toast.error(res.data.message || "No products found");
@@ -58,7 +58,7 @@ function DisplayProducts() {
                     height="50"
                   />
                 </td>
-                <td>{product.category}</td>
+                <td>{product?.category?.name || "no category"}</td>
                 <td>
                   <button>Edit</button>
                   <button>Delete</button>
