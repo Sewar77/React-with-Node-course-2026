@@ -16,7 +16,8 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 function Cart() {
-  const { cart, increaseItem, clearCart } = useContext(CartContext);
+  const { cart, increaseItem, clearCart, decreaseItem, deleteItem } =
+    useContext(CartContext);
 
   const total =
     cart?.items?.reduce(
@@ -63,7 +64,10 @@ function Cart() {
 
                       <Typography sx={{ mx: 2 }}>{item.quantity}</Typography>
 
-                      <IconButton color="primary">
+                      <IconButton
+                        color="primary"
+                        onClick={() => decreaseItem(item.productId._id)}
+                      >
                         <RemoveIcon />
                       </IconButton>
                     </Box>
@@ -75,6 +79,12 @@ function Cart() {
                       ${(item.productId.price * item.quantity).toFixed(2)}
                     </Typography>
                   </Grid>
+                  <IconButton
+                    color="primary"
+                    onClick={() => deleteItem(item.productId._id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </Grid>
               </CardContent>
             </Card>

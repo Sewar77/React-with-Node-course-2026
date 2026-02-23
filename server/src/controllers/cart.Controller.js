@@ -113,7 +113,43 @@ export const increaseItem = async (req, res) => {
 
 //decrese task
 
+export const decreaseItem = async (req, res) => {
+    const userId = req.user.id;
+    const { productsId } = req.body;
+    console.log("productsId", productsId)
+    try {
 
+        const cart = await Cart.findOne({ userId });
+
+        if (!cart)
+            return res.status(404).json({ message: "Cart not found" });
+
+        const item = cart.items.find(
+            item => item.productId.toString() === productsId
+        );
+
+        if (!item)
+            return res.status(404).json({ message: "Item not found" });
+
+        item.quantity--;
+
+        if (item.quantity <= 0) {
+            cart.items = cart.items.filter(
+                item => item.productId.toString() !== productsId
+            );
+        }
+        await cart.save();
+        const updatedCart = await Cart.findById(cart._id)
+            .populate("items.productId");
+
+        res.status(200).json({ cart: updatedCart });
+
+    } catch (err) {
+
+        res.status(500).json(err);
+
+    }
+}
 
 
 //clear cart
@@ -136,7 +172,38 @@ export const clearCart = async (req, res) => {
 
 
 
+//delete item from cart
+export const deleteItem = async (req, res) => {
+    const userId = req.user.id;
+    const { productsId } = req.body;
+    console.log("productsId", productsId)
+    try {
 
+        const cart = await Cart.findOne({ userId });
+
+        if (!cart)
+            return res.status(404).json({ message: "Cart not found" });
+
+        const item = cart.items.find(
+            item => item.productId.toString() === productsId
+        );
+
+        if (!item)
+            return res.status(404).json({ message: "Item not found" });
+
+        cart.items = cart.items.filter(
+            item => item.productId.toString() !== productsId
+        );
+        await cart.save()
+        res.status(200).json({ cart });
+
+    } catch (err) {
+
+        res.status(500).json(err);
+
+    }
+
+}
 
 
 

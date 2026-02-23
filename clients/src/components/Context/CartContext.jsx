@@ -35,6 +35,27 @@ export const CartProvider = ({ children }) => {
       console.error(err);
     }
   };
+  const deleteItem = async (productsId) => {
+    try {
+      const res = await api.delete("/cart/delete", { data: { productsId } });
+
+      setCart(res.data.cart);
+
+      toast.success("deleted successfully");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const decreaseItem = async (productsId) => {
+    try {
+      const res = await api.put("/cart/decrease", { productsId });
+      console.log(productsId);
+      setCart(res.data.cart);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const increaseItem = async (productsId) => {
     try {
       const res = await api.put("/cart/increase", { productsId });
@@ -56,6 +77,8 @@ export const CartProvider = ({ children }) => {
         addToCart,
         fetchCart,
         increaseItem,
+        deleteItem,
+        decreaseItem,
         clearCart,
       }}
     >
