@@ -24,7 +24,7 @@ app.use(globalRateLimit)
 app.use(cookieParser());
 app.use(helmet())
 app.use(cors({
-    origin: "http://localhost:5000",
+    origin: "https://clients-six-pi.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
@@ -38,5 +38,5 @@ app.use("/api", cartRouter)
 app.use(notFound)
 app.use(globalErrorHandler) //MUST be the last one
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
