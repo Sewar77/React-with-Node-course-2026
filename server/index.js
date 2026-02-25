@@ -24,7 +24,7 @@ app.use(globalRateLimit)
 app.use(cookieParser());
 app.use(helmet())
 app.use(cors({
-    origin: "https://store-ecru-psi.vercel.app/",
+    origin: "https://store-ecru-psi.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
