@@ -23,25 +23,10 @@ app.use(express.json());
 app.use(globalRateLimit)
 app.use(cookieParser());
 app.use(helmet())
-const allowedOrigins = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "https://store-54rw8lnjl-sewar77s-projects.vercel.app"
-];
-
 app.use(cors({
-    origin: function (origin, callback) {
-
-        if (!origin) return callback(null, true);
-
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-
-    },
-    credentials: true
+    origin: "https://store-ecru-psi.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
 }));
 // API routes
 app.use("/api", userRoutes);
